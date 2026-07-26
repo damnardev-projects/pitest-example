@@ -1,56 +1,76 @@
-# Maven Template
+# Pitest Example
 
-Multi-module Maven project including the **Maven 3.9.9** wrapper, configured for **Java 21**, with a simple example using **JUnit 6**.
+Multi-module Maven project including the **Maven** wrapper, configured for **Java 21**, with JUnit and PiTest.
+
+[PIT](https://pitest.org/) is a state of the art mutation testing system.
 
 ## Modules
 
 **root**: Root **pom.xml**: lists the modules, configures **SonarQube** and **JaCoCo**.
 
-**maven-template-dependencies**: **BOM** (Bill of Materials) centralizing dependency and plugin versions.
+**pitest-example-dependencies**: **BOM** (Bill of Materials) centralizing dependency and plugin versions.
 
-**maven-template-parent**: Parent configuring the **Java** version and encoding, inheriting from **maven-template-dependencies**.
+**pitest-example-parent**: Parent configuring the **Java** version and encoding, inheriting from **pitest-example-dependencies**.
 
-**maven-template-internal-parent**: Utility parent inheriting from **maven-template-parent**, configuring **flatten-maven-plugin** in **OSSRH** mode.
+**pitest-example-internal-parent**: Utility parent inheriting from **pitest-example-parent**, configuring **flatten-maven-plugin** in **OSSRH** mode.
 
-**maven-template-common** and **maven-template-cli**: Application modules, both inheriting from **maven-template-internal-parent**.
+**pitest-example-module-A** and **pitest-example-module-B**: Application modules, both inheriting from **pitest-example-internal-parent**.
 
-**maven-template-tests**: Module for aggregating test and coverage results.
+**pitest-example-tests**: Module for aggregating test, and coverage results and pitest reports.
 
 ## Useful Commands (Maven)
 
 - `./mvnw clean` : removes generated files
 - `./mvnw compile` : compiles the project
 - `./mvnw test` : runs unit tests
-- `./mvnw verify` : runs tests and generates a coverage report in **maven-template-tests/target/site/jacoco-aggregate**
-- `./mvnw install` : installs the project in the local **Maven** repository
-- `./mvnw exec:java -pl maven-template-cli` : runs the command-line application
-- `./mvnw versions:display-dependency-updates` : lists available dependency updates
-- `./mvnw versions:display-plugin-updates` : lists available plugin updates
+- `./mvnw verify` : runs tests and generates a pit report in **pitest-example-tests/target/pit-reports/**
 
 ## Adding a Module
 
 To add a new module to the project:
 
 1. Add the module in the root **pom.xml**.
-2. Declare its dependency in the **dependencyManagement** block of the **maven-template-dependencies** **pom.xml**.
-3. Create the module with **maven-template-internal-parent** as its parent.
-4. Reference the module in the **maven-template-tests** **pom.xml** so its coverage is aggregated.
+2. Declare its dependency in the **dependencyManagement** block of the **pitest-example-dependencies** **pom.xml**.
+3. Create the module with **pitest-example-internal-parent** as its parent.
+4. Reference the module in the **pitest-example-tests** **pom.xml** so its coverage is aggregated.
 
-## Adding a Dependency
+## How to configure PiTest
 
-Edit the **dependencyManagement** section of the **maven-template-dependencies** **pom.xml** to declare the new dependency, then
-reference it in the modules that need it.
-
-## Adding a Plugin
-
-Same approach as for a dependency: declare the plugin in the **pluginManagement** section of the **maven-template-dependencies** **pom.xml**, then reference it in the relevant modules.
-
-## SonarQube Configuration
-
-1. Set the **SONAR_TOKEN** environment variable with your authentication token.
-2. Update the **sonar.projectKey** property with your **SonarQube** project identifier.
-3. Run the analysis with the following command (replacing `<<url_server>>` with your server URL):
+Add the following block to the module's pom.xml:
 
 ```
-./mvnw clean verify sonar:sonar -Dsonar.host.url=<<url_server>>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<executions>
+					<execution>
+						<id>run-mutation-tests</id>
+						<goals>
+							<goal>mutationCoverage</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<targetClasses>
+						<param>fr.damnardev.example.moduleB.*</param>
+					</targetClasses>
+					<targetTests>
+						<param>fr.damnardev.example.moduleB.*</param>
+					</targetTests>
+					<mutators>
+						<mutator>ALL</mutator>
+					</mutators>
+					<exportLineCoverage>true</exportLineCoverage>
+					<outputFormats>
+						<value>XML</value>
+					</outputFormats>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 ```
+
+1. Adapt the **targetClasses** and **targetTests** to your project.
+2. Based on your needs, you can configure the mutators. See https://pitest.org/quickstart/mutators/ for more details.

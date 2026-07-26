@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xmlns="http://maven.apache.org/POM/4.0.0"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>fr.damnardev.template.maven</groupId>
-	<artifactId>maven-template-wrapper</artifactId>
+	<groupId>fr.damnardev.example</groupId>
+	<artifactId>pitest-example-wrapper</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Maven Template Wrapper</name>
+	<name>Pitest Example Wrapper</name>
 
 	<licenses>
 		<license>
@@ -28,9 +28,9 @@
 	</developers>
 
 	<scm>
-		<url>https://github.com/damnardev-projects/maven-template</url>
-		<connection>scm:git:git://github.com/damnardev-projects/maven-template.git</connection>
-		<developerConnection>scm:git:git@github.com:damnardev-projects/maven-template.git</developerConnection>
+		<url>https://github.com/damnardev-projects/pitest-example</url>
+		<connection>scm:git:git://github.com/damnardev-projects/pitest-example.git</connection>
+		<developerConnection>scm:git:git@github.com:damnardev-projects/pitest-example.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
@@ -40,22 +40,21 @@
 		<sonar.maven.plugin.version>5.7.0.6970</sonar.maven.plugin.version>
 		<versions.maven.plugin.version>2.21.0</versions.maven.plugin.version>
 
-		<sonar.projectKey>maven-template</sonar.projectKey>
-		<sonar.projectName>Maven Template</sonar.projectName>
+		<sonar.projectKey>pitest-example</sonar.projectKey>
+		<sonar.projectName>Pitest Example</sonar.projectName>
 		<sonar.coverage.jacoco.xmlReportPaths>
-			${maven.multiModuleProjectDirectory}/maven-template-tests/target/site/jacoco-aggregate/jacoco.xml
+			${maven.multiModuleProjectDirectory}/pitest-example-tests/target/site/jacoco-aggregate/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
-		<sonar.coverage.exclusions>**/Startup.java</sonar.coverage.exclusions>
 		<jacoco.excludes>**/generated/**,**/target/**</jacoco.excludes>
 	</properties>
 
 	<modules>
-		<module>maven-template-dependencies</module>
-		<module>maven-template-parent</module>
-		<module>maven-template-internal-parent</module>
-		<module>maven-template-common</module>
-		<module>maven-template-cli</module>
-		<module>maven-template-tests</module>
+		<module>pitest-example-dependencies</module>
+		<module>pitest-example-parent</module>
+		<module>pitest-example-internal-parent</module>
+		<module>pitest-example-module-A</module>
+		<module>pitest-example-module-B</module>
+		<module>pitest-example-tests</module>
 	</modules>
 
 	<build>
