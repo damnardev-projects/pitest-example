@@ -30,7 +30,7 @@
 		<maven.jar.plugin.version>3.5.1</maven.jar.plugin.version>
 		<maven.resources.plugin.version>3.5.0</maven.resources.plugin.version>
 		<maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
-		<pitest.maven.plugin.version>1.25.8</pitest.maven.plugin.version>
+		<pitest.maven.plugin.version>1.25.9</pitest.maven.plugin.version>
 		<pitest.junit5.version>1.2.3</pitest.junit5.version>
 	</properties>
 
